@@ -3,18 +3,18 @@
 const middlewares = require('../../../../config/middlewares');
 
 /**
- * product router
+ * request router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::product.product', {
+module.exports = createCoreRouter('api::request.request', {
   config: {
     find: {
-      middlewares: ['api::product.products-populate'],
+      middlewares: ['api::request.requests-populate'],
     },
     findOne: {
-      middlewares: ['api::product.products-populate'],
+      middlewares: ['api::request.requests-populate'],
     }
   }
 });

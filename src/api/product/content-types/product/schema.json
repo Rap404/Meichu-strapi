@@ -39,7 +39,7 @@
       "type": "text"
     },
     "price": {
-      "type": "biginteger"
+      "type": "integer"
     },
     "product_link": {
       "type": "string"
@@ -49,6 +49,19 @@
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "products"
+    },
+    "likes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::like.like",
+      "mappedBy": "product"
+    },
+    "total_likes": {
+      "type": "integer",
+      "default": 0
+    },
+    "uuid": {
+      "type": "uid"
     }
   }
 }

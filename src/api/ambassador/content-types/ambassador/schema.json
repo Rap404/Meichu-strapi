@@ -4,7 +4,8 @@
   "info": {
     "singularName": "ambassador",
     "pluralName": "ambassadors",
-    "displayName": "Ambassador"
+    "displayName": "Ambassador",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,20 +16,24 @@
       "type": "string"
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "description": {
       "type": "text"
     },
     "socmed_links": {
       "type": "json"
+    },
+    "uuid": {
+      "type": "uid"
     }
   }
 }

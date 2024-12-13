@@ -695,7 +695,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -724,6 +723,17 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    likes: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::like.like'
+    >;
+    requests: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::request.request'
+    >;
+    profilePicture: Attribute.Media<'images'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -794,15 +804,17 @@ export interface ApiAmbassadorAmbassador extends Schema.CollectionType {
     singularName: 'ambassador';
     pluralName: 'ambassadors';
     displayName: 'Ambassador';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     name: Attribute.String;
-    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     description: Attribute.Text;
     socmed_links: Attribute.JSON;
+    uuid: Attribute.UID;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -835,12 +847,12 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     description: Attribute.String;
-    slug: Attribute.UID<'api::category.category', 'name'>;
     products: Attribute.Relation<
       'api::category.category',
       'oneToMany',
       'api::product.product'
     >;
+    uuid: Attribute.UID;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -865,20 +877,19 @@ export interface ApiEventEvent extends Schema.CollectionType {
     singularName: 'event';
     pluralName: 'events';
     displayName: 'Event';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     name: Attribute.String;
-    image_cover: Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
+    image_cover: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     description: Attribute.Text;
     event_link: Attribute.String;
     start_date: Attribute.DateTime;
     end_date: Attribute.DateTime;
+    uuid: Attribute.UID;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -893,6 +904,38 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiLikeLike extends Schema.CollectionType {
+  collectionName: 'likes';
+  info: {
+    singularName: 'like';
+    pluralName: 'likes';
+    displayName: 'Like';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    users_permissions_user: Attribute.Relation<
+      'api::like.like',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    product: Attribute.Relation<
+      'api::like.like',
+      'manyToOne',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -913,13 +956,20 @@ export interface ApiProductProduct extends Schema.CollectionType {
     thumbnail: Attribute.Media<'images'> & Attribute.Required;
     images: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     description: Attribute.Text;
-    price: Attribute.BigInteger;
+    price: Attribute.Integer;
     product_link: Attribute.String;
     category: Attribute.Relation<
       'api::product.product',
       'manyToOne',
       'api::category.category'
     >;
+    likes: Attribute.Relation<
+      'api::product.product',
+      'oneToMany',
+      'api::like.like'
+    >;
+    total_likes: Attribute.Integer & Attribute.DefaultTo<0>;
+    uuid: Attribute.UID;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -931,6 +981,48 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRequestRequest extends Schema.CollectionType {
+  collectionName: 'requests';
+  info: {
+    singularName: 'request';
+    pluralName: 'requests';
+    displayName: 'Request';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    productType: Attribute.Enumeration<['Single', 'Bundle']>;
+    references: Attribute.Media<'images' | 'videos' | 'audios' | 'files'> &
+      Attribute.Required;
+    imvu: Attribute.Boolean;
+    isNew: Attribute.Boolean & Attribute.DefaultTo<true>;
+    user: Attribute.Relation<
+      'api::request.request',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    uuid: Attribute.UID;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::request.request',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::request.request',
       'oneToOne',
       'admin::user'
     > &
@@ -959,7 +1051,9 @@ declare module '@strapi/types' {
       'api::ambassador.ambassador': ApiAmbassadorAmbassador;
       'api::category.category': ApiCategoryCategory;
       'api::event.event': ApiEventEvent;
+      'api::like.like': ApiLikeLike;
       'api::product.product': ApiProductProduct;
+      'api::request.request': ApiRequestRequest;
     }
   }
 }
