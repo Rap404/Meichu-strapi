@@ -10,7 +10,9 @@ const middlewares = require('../../../../config/middlewares');
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::ambassador.ambassador', {
+module.exports =
+
+createCoreRouter('api::ambassador.ambassador', {
   config: {
     find: {
       middlewares: ['api::ambassador.ambassador-populate'],

@@ -9,15 +9,14 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::category.category', ({strapi}) => ({
   async find(ctx) {
     const contentType = strapi.contentType('api::category.category');
+    strapi.log.info(`Controller function find - ctx.query: ${JSON.stringify(ctx.query)}`);
+
 
     // Log untuk debugging
-    strapi.log.info('Finding with query:', JSON.stringify(ctx.query));
+    // strapi.log.info('Finding with query:', JSON.stringify(ctx.query));
 
     const entities = await strapi.entityService.findMany('api::category.category', {
       ...ctx.query,
-      populate: {
-        products: true,
-      }
     });
 
     const sanitizeEntities = await this.sanitizeOutput(entities, ctx);
@@ -28,22 +27,19 @@ module.exports = createCoreController('api::category.category', ({strapi}) => ({
     const { id } = ctx.params;
 
     try {
+      strapi.log.info(`Controller function findOne - ctx.query: ${JSON.stringify(ctx.query)}`);
+
       strapi.log.info('Finding one with query:', JSON.stringify({
         where: { uuid: id },
-        populate: {
-          products: true,
-        }
       }));
 
       const entity = await strapi.db.query('api::category.category').findOne({
         where: { uuid: id },
-        populate: {
-          products: true,
-        }
+        ...ctx.query,
       });
 
       if (!entity) {
-        return ctx.notFound('Event not found');
+        return ctx.notFound(`Event not ketemu ${id}`);
       }
 
       const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
@@ -51,6 +47,38 @@ module.exports = createCoreController('api::category.category', ({strapi}) => ({
     } catch (error) {
       strapi.log.error('Error fetching entity: ', error);
       return ctx.internalServerError("Internal server error");
+    }
+  },
+
+  async search(ctx) {
+    const { query } = ctx.request.query;
+
+    if (!query) {
+      return ctx.badRequest('Search query is required')
+    }
+
+    try {
+      strapi.log.info('Searching categories with query:', query);
+      strapi.log.info('Controller search triggered - ctx.query:', JSON.stringify(ctx.query));
+
+
+      const entities = await strapi.entityService.findMany('api::category.category', {
+        filters: {
+          $or: [
+            {name: { $containsi: query }},
+            {description: { $containsi: query }}
+          ]
+        },
+        ...ctx.query,
+      });
+      strapi.log.info(`Found ${entities.length} categories`);
+
+      const sanitizedEntities = await this.sanitizeOutput(entities, ctx);
+      return this.transformResponse(sanitizedEntities);
+
+    } catch (error) {
+      strapi.log.error('Error in category search:', error);
+      return ctx.internalServerError("Internal server error during search");
     }
   }
 }) );
