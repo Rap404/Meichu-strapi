@@ -14,42 +14,8 @@ module.exports = createCoreRouter('api::category.category', {
     findOne: {
       middlewares: ['api::category.categories-populate'],
     },
-    search: {
+    delete: {
       middlewares: ['api::category.categories-populate'],
     }
   }
 });
-
-// {
-//   routes: [
-//     {
-//       method: 'GET',
-//       path: '/categories/search',
-//       handler: 'category.search',
-//       config: {
-//         auth: false,
-//         middlewares: ['api::category.categories-populate'],
-//       },
-//     },
-//     {
-//       method: 'GET',
-//       path: '/categories',
-//       handler: 'category.find',
-//       config: {
-//         auth: false,
-//         middlewares: ['api::category.categories-populate']
-//       },
-//     },
-//     {
-//       method: 'GET',
-//       path: '/categories/:id',
-//       handler: 'category.findOne',
-//       config: {
-//         auth: false,
-//         middlewares: ['api::category.categories-populate']
-//       }
-//     }
-//   ]
-// }
-
-

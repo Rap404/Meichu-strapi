@@ -5,14 +5,10 @@
  */
 
 const populate = {
-  populate : {
-    references: {
-      fields: ['name', 'url', 'alternativeText']
-    },
+    references: true,
     user: {
       select: ['id', 'username', 'email']
     }
-  }
 }
 
 module.exports = (config, { strapi }) => {

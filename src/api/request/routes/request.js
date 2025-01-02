@@ -15,6 +15,9 @@ module.exports = createCoreRouter('api::request.request', {
     },
     findOne: {
       middlewares: ['api::request.requests-populate'],
+    },
+    update: {
+      middlewares: ['api::request.requests-populate']
     }
   }
 });
