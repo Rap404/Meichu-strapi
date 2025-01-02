@@ -65,12 +65,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "likes": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::like.like",
-      "mappedBy": "users_permissions_user"
-    },
     "requests": {
       "type": "relation",
       "relation": "oneToMany",
@@ -78,11 +72,21 @@
       "mappedBy": "user"
     },
     "profilePicture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "likes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::like.like",
+      "mappedBy": "user"
+    },
+    "telephoneNumber": {
+      "type": "string"
     }
   }
 }

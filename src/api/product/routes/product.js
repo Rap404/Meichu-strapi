@@ -15,6 +15,12 @@ module.exports = createCoreRouter('api::product.product', {
     },
     findOne: {
       middlewares: ['api::product.products-populate'],
+    },
+    update: {
+      middlewares: ['api::product.products-populate'],
+    },
+    delete: {
+      middlewares: ['api::product.products-populate'],
     }
   }
 });

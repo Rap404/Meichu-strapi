@@ -15,6 +15,12 @@ module.exports = createCoreRouter('api::event.event', {
     },
     findOne: {
       middlewares: ['api::event.events-populate'],
+    },
+    update: {
+      middlewares: ['api::event.events-populate']
+    },
+    delete: {
+      middlewares: ['api::event.events-populate']
     }
   }
 });

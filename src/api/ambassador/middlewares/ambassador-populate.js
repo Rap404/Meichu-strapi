@@ -5,11 +5,7 @@
  */
 
 const populate= {
-  populate: {
-    image: {
-      fields: ['name', 'alternativeText', 'url']
-    }
-  }
+    image: true,
 }
 
 module.exports = (config, { strapi }) => {

@@ -5,19 +5,12 @@
  */
 
 const populate = {
-  populate: {
-    thumbnail: {
-      fields: ['name', 'alternativeText', 'url']
-    },
+    thumbnail: true,
     images: {
-      image: {
-        populate: true,
-        fields: ['name', 'url', 'alternativeText']
-      }
+      image: true,
     },
     likes: true,
-    category: true,
-  }
+    categories: true,
 }
 
 module.exports = (config, { strapi }) => {
