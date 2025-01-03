@@ -113,7 +113,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
       })
 
       if (!existingProduct) {
-        return ctx.notFound(`Product ${id} not found`);
+        return ctx.notFound(`Product with uuid ${id} is not found`);
       }
 
       console.log('Existing product:', existingProduct); // Debug log
