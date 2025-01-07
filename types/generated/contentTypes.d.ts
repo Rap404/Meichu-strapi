@@ -834,6 +834,36 @@ export interface ApiAmbassadorAmbassador extends Schema.CollectionType {
   };
 }
 
+export interface ApiBannerImageBannerImage extends Schema.CollectionType {
+  collectionName: 'banner_images';
+  info: {
+    singularName: 'banner-image';
+    pluralName: 'banner-images';
+    displayName: 'banner image';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::banner-image.banner-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::banner-image.banner-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -972,6 +1002,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
     >;
     total_likes: Attribute.Integer & Attribute.DefaultTo<0>;
     uuid: Attribute.UID;
+    isBundle: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1051,6 +1082,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::ambassador.ambassador': ApiAmbassadorAmbassador;
+      'api::banner-image.banner-image': ApiBannerImageBannerImage;
       'api::category.category': ApiCategoryCategory;
       'api::event.event': ApiEventEvent;
       'api::like.like': ApiLikeLike;

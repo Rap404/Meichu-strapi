@@ -1,6 +1,31 @@
 module.exports = ({ env }) => ({
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
+    providers: [
+      {
+        uid: "discord",
+        displayName: "Discord",
+        icon: "https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png",
+        createStrategy: (strapi) =>
+          new DiscordStrategy(
+            {
+              clientID: env("DISCORD_CLIENT_ID"),
+              clientSecret: env("DISCORD_SECRET"),
+              callbackURL:
+                strapi.admin.services.passport.getStrategyCallbakURL(
+                  "discord"
+                ),
+              scope: ["identify", "email"],
+            },
+            (accessToken, refreshToken, profile, done) => {
+              done(null, {
+                email: profile.email,
+                username: `${profile.username}#${profile.discriminator}`,
+              })
+            }
+          )
+      }
+    ]
   },
   apiToken: {
     salt: env('API_TOKEN_SALT'),

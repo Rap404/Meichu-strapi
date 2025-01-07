@@ -62,6 +62,10 @@
     },
     "uuid": {
       "type": "uid"
+    },
+    "isBundle": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
