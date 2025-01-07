@@ -12,7 +12,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
 
   async create (ctx){
     try{
-      const { name, categories, thumbnail, images, description, price, product_link } = ctx.request.body.data;
+      const { name, categories, thumbnail, images, description, price, product_link, isBundle } = ctx.request.body.data;
       const uuid = uuidv4();
 
       if (!name || !description || !price || !product_link){
@@ -29,6 +29,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
           description,
           price,
           product_link,
+          isBundle,
           publishedAt: new Date()
         }
       });
@@ -124,6 +125,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
         description: data.description,
         price: data.price,
         product_link: data.product_link,
+        isBundle: data.isBundle
       };
 
       if (data.categories){

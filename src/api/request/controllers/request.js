@@ -135,7 +135,8 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
       const updateData = {
         name: data.name,
         productType: data.productType,
-        imvu: data.imvu
+        imvu: data.imvu,
+        isNew: data.isNew,
       }
 
       if ('references' in data){

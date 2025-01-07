@@ -6,9 +6,7 @@
 
 const populate = {
     references: true,
-    user: {
-      select: ['id', 'username', 'email']
-    }
+    user: true,
 }
 
 module.exports = (config, { strapi }) => {
