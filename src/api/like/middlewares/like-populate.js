@@ -6,7 +6,9 @@
 
 const populate = {
   user: true,
-  product: true,
+  product: {
+    populate: '*'
+  }
 }
 
 module.exports = (config, { strapi }) => {
