@@ -840,12 +840,14 @@ export interface ApiBannerImageBannerImage extends Schema.CollectionType {
     singularName: 'banner-image';
     pluralName: 'banner-images';
     displayName: 'banner image';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    uuid: Attribute.UID & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

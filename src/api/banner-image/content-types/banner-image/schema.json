@@ -4,7 +4,8 @@
   "info": {
     "singularName": "banner-image",
     "pluralName": "banner-images",
-    "displayName": "banner image"
+    "displayName": "banner image",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,14 +13,19 @@
   "pluginOptions": {},
   "attributes": {
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "uuid": {
+      "type": "uid",
+      "required": true
     }
   }
 }
