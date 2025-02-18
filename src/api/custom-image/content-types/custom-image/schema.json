@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "custom_images",
+  "info": {
+    "singularName": "custom-image",
+    "pluralName": "custom-images",
+    "displayName": "CustomImage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "uuid": {
+      "type": "uid",
+      "required": true
+    }
+  }
+}
