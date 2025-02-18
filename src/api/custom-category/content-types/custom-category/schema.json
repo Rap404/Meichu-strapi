@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "custom_categories",
+  "info": {
+    "singularName": "custom-category",
+    "pluralName": "custom-categories",
+    "displayName": "CustomCategory",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "uuid": {
+      "type": "uid"
+    },
+    "requests": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::request.request",
+      "inversedBy": "custom_categories"
+    },
+    "isBundle": {
+      "type": "boolean"
+    }
+  }
+}

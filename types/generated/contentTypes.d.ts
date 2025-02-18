@@ -904,6 +904,76 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiCustomCategoryCustomCategory extends Schema.CollectionType {
+  collectionName: 'custom_categories';
+  info: {
+    singularName: 'custom-category';
+    pluralName: 'custom-categories';
+    displayName: 'CustomCategory';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    uuid: Attribute.UID;
+    requests: Attribute.Relation<
+      'api::custom-category.custom-category',
+      'manyToMany',
+      'api::request.request'
+    >;
+    isBundle: Attribute.Boolean;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::custom-category.custom-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::custom-category.custom-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCustomImageCustomImage extends Schema.CollectionType {
+  collectionName: 'custom_images';
+  info: {
+    singularName: 'custom-image';
+    pluralName: 'custom-images';
+    displayName: 'CustomImage';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    image: Attribute.Media<'images'> & Attribute.Required;
+    uuid: Attribute.UID & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::custom-image.custom-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::custom-image.custom-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiEventEvent extends Schema.CollectionType {
   collectionName: 'events';
   info: {
@@ -1047,6 +1117,11 @@ export interface ApiRequestRequest extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     uuid: Attribute.UID;
+    custom_categories: Attribute.Relation<
+      'api::request.request',
+      'manyToMany',
+      'api::custom-category.custom-category'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1086,6 +1161,8 @@ declare module '@strapi/types' {
       'api::ambassador.ambassador': ApiAmbassadorAmbassador;
       'api::banner-image.banner-image': ApiBannerImageBannerImage;
       'api::category.category': ApiCategoryCategory;
+      'api::custom-category.custom-category': ApiCustomCategoryCustomCategory;
+      'api::custom-image.custom-image': ApiCustomImageCustomImage;
       'api::event.event': ApiEventEvent;
       'api::like.like': ApiLikeLike;
       'api::product.product': ApiProductProduct;

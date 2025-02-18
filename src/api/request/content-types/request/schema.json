@@ -48,6 +48,12 @@
     },
     "uuid": {
       "type": "uid"
+    },
+    "custom_categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::custom-category.custom-category",
+      "mappedBy": "requests"
     }
   }
 }
