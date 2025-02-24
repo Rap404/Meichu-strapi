@@ -11,14 +11,24 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
 
   async create(ctx){
     try {
-      const { name, productType, references, imvu, user } = ctx.request.body.data;
+      const { name, productType, references, imvu, user, custom_categories } = ctx.request.body.data;
       const uuid = uuidv4();
+      const categories = [];
 
-      console.log('tes', user)
+      strapi.log.info(custom_categories)
 
       if (!name || !productType || !references || !user){
         return ctx.badRequest('Missing required fields')
       }
+
+        if (custom_categories) {
+          for (const cat of custom_categories) {
+            const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
+              where: { uuid: cat },
+            });
+            categories.push(entity.id);
+          }
+        }
 
       const entry = await strapi.entityService.create('api::request.request', {
         data: {
@@ -28,6 +38,7 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
           references,
           imvu,
           user,
+          custom_categories: categories,
           publishedAt: new Date()
         }
       })
@@ -118,6 +129,17 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
     try{
       const data = ctx.request.body.data || {};
 
+      const categories = [];
+
+      if (data.custom_categories) {
+        for (const cat of data.custom_categories) {
+          const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
+            where: { uuid: cat },
+          });
+          categories.push(entity.id);
+        }
+      }
+
       console.log('Event update data: ', data);
 
       // fetch existing event
@@ -137,6 +159,7 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
         productType: data.productType,
         imvu: data.imvu,
         isNew: data.isNew,
+        custom_categories: categories
       }
 
       if ('references' in data){

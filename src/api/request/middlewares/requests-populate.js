@@ -7,6 +7,7 @@
 const populate = {
     references: true,
     user: true,
+    custom_categories: true,
 }
 
 module.exports = (config, { strapi }) => {
