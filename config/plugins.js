@@ -1,6 +1,18 @@
 const api = require("./api");
 
 module.exports = ({ env }) => ({
+  'user-permissions': {
+    config: {
+      providers: {
+        google: {
+          enabled: true,
+          clientId: env('GOOGLE_CLIENT_ID'),
+          clientSecret: env('GOOGLE_CLIENT_SECRET'),
+          callback: env('GOOGLE_CALLBACK_URL')
+        }
+      }
+    }
+  },
   email: {
     config: {
       provider: 'nodemailer',
