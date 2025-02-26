@@ -23,7 +23,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::request.request",
-      "inversedBy": "custom_categories"
+      "mappedBy": "custom_categories"
     },
     "isBundle": {
       "type": "boolean"

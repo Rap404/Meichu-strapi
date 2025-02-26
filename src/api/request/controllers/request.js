@@ -21,14 +21,14 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
         return ctx.badRequest('Missing required fields')
       }
 
-        if (custom_categories) {
-          for (const cat of custom_categories) {
-            const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
-              where: { uuid: cat },
-            });
-            categories.push(entity.id);
-          }
+      if (custom_categories) {
+        for (const cat of custom_categories) {
+          const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
+            where: { uuid: cat },
+          });
+          categories.push(entity.id);
         }
+      }
 
       const entry = await strapi.entityService.create('api::request.request', {
         data: {
@@ -129,19 +129,6 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
     try{
       const data = ctx.request.body.data || {};
 
-      const categories = [];
-
-      if (data.custom_categories) {
-        for (const cat of data.custom_categories) {
-          const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
-            where: { uuid: cat },
-          });
-          categories.push(entity.id);
-        }
-      }
-
-      console.log('Event update data: ', data);
-
       // fetch existing event
       const existingRequest = await strapi.db.query('api::request.request').findOne({
         where: { uuid: id },
@@ -159,7 +146,22 @@ module.exports = createCoreController('api::request.request', ({ strapi }) => ({
         productType: data.productType,
         imvu: data.imvu,
         isNew: data.isNew,
-        custom_categories: categories
+      }
+
+      if ('custom_categories' in data) {
+        let categories = [];
+        for (const cat of data.custom_categories) {
+          const entity = await strapi.db.query('api::custom-category.custom-category').findOne({
+            where: { uuid: cat },
+          });
+          categories.push(entity.id);
+        }
+
+        if (categories.length > 0) {
+          updateData.custom_categories = categories;
+        } else {
+          return ctx.badRequest(`Custom categories with uuid ${data.custom_categories} not found`);
+        }
       }
 
       if ('references' in data){
