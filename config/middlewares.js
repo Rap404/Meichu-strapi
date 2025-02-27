@@ -15,14 +15,7 @@ module.exports = [
       }
     }
   },
-  {
-    name: 'strapi::cors',
-    config: {
-      enabled: true,
-      headers: '*',
-      origin: ['http://localhost:1337', 'http://localhost:3000', 'https://strapi-meichu.designundangan.my.id']
-    }
-  },
+  'strapi::cors',
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
